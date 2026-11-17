@@ -1,5 +1,6 @@
 from typing import BinaryIO
-from .EmbPattern import EmbPattern
+
+from pystitch.EmbPattern import EmbPattern
 
 
 def read_100_stitches(f: BinaryIO, out: EmbPattern):

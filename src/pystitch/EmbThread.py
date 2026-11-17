@@ -1,5 +1,6 @@
 from typing import Optional
 
+
 def build_unique_palette(thread_palette, threadlist):
     """Turns a threadlist into a unique index list with the thread palette"""
     chart = [None] * len(thread_palette)  # Create a lookup chart.
@@ -102,6 +103,7 @@ class EmbThread:
         brand: Optional[str] = None,
         chart: Optional[str] = None,
         weight: Optional[str] = None,
+        reserved: bool = False,
     ):
         self._color = 0x000000
         self.description = description
@@ -110,12 +112,13 @@ class EmbThread:
         self.brand = brand
         self.chart = chart
         self.weight = weight
+        self.reserved = reserved
         # description, catalog_number, details, brand, chart, weight
         if thread is not None:
             self.set(thread)
 
     def __repr__(self):
-        parts = list()
+        parts = []
         parts.append("thread='%s'" % self.hex_color())
         if self.description is not None:
             parts.append("description='%s'" % self.description)
@@ -181,7 +184,7 @@ class EmbThread:
             color = color_rgb(r, g, b)
 
         if not isinstance(color, int):
-            raise ValueError()
+            raise TypeError()
 
         self._color = color
 

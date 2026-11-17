@@ -1,8 +1,9 @@
 from typing import BinaryIO
 
-from .EmbPattern import EmbPattern
-from .EmbFunctions import *
-from .WriteHelper import write_int_16le, write_int_32le
+from pystitch.EmbConstant import *
+from pystitch.EmbFunctions import decode_embroidery_command
+from pystitch.EmbPattern import EmbPattern
+from pystitch.WriteHelper import write_int_16le, write_int_32le
 
 THREAD_CHANGE_COMMAND = NEEDLE_SET
 SEQUIN_CONTINGENCY = CONTINGENCY_SEQUIN_JUMP

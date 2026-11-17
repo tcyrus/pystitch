@@ -1,7 +1,6 @@
 from typing import BinaryIO
 
-from .EmbPattern import EmbPattern
-
+from pystitch.EmbPattern import EmbPattern
 
 MIT_SIZE_CONVERSION_RATIO = 2.0 / 1.0
 

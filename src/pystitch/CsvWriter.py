@@ -1,10 +1,11 @@
 import math
 from typing import BinaryIO
 
-from .EmbFunctions import *
-from .EmbPattern import EmbPattern
-from .PecGraphics import get_graphic_as_string
-from .WriteHelper import write_string_utf8
+from pystitch.EmbConstant import *
+from pystitch.EmbFunctions import decode_embroidery_command, get_common_name_dictionary
+from pystitch.EmbPattern import EmbPattern
+from pystitch.GraphicsHelper import get_graphic_as_string
+from pystitch.WriteHelper import write_string_utf8
 
 ENCODE = False
 WRITES_SPEEDS = True

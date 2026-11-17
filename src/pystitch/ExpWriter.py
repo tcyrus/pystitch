@@ -1,7 +1,7 @@
 from typing import BinaryIO
 
-from .EmbConstant import *
-from .EmbPattern import EmbPattern
+from pystitch.EmbConstant import *
+from pystitch.EmbPattern import EmbPattern
 
 SEQUIN_CONTINGENCY = CONTINGENCY_SEQUIN_JUMP
 FULL_JUMP = True

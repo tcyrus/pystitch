@@ -1,8 +1,8 @@
 from typing import BinaryIO
 
-from .EmbConstant import *
-from .EmbPattern import EmbPattern
-from .WriteHelper import write_int_8, write_int_16le, write_int_32le
+from pystitch.EmbConstant import *
+from pystitch.EmbPattern import EmbPattern
+from pystitch.WriteHelper import write_int_8, write_int_16le, write_int_32le
 
 FULL_JUMP = False
 ROUND = True

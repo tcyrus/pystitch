@@ -1,13 +1,18 @@
-from typing import TextIO
-from .EmbPattern import EmbPattern
-from .EmbFunctions import *
+import csv
+from io import TextIOWrapper
+from typing import BinaryIO, TextIO
 
-READ_FILE_IN_TEXT_MODE = True
+from pystitch.EmbFunctions import get_command_dictionary
+from pystitch.EmbPattern import EmbPattern
 
 
-def read(f: TextIO, out: EmbPattern, settings=None):
-    import csv
+def read(f: BinaryIO, out: EmbPattern, settings=None):
+    _f = TextIOWrapper(f, errors="ignore")
+    _read(_f, out, settings)
+    _f.flush()
+    _f.detach()
 
+def _read(f: TextIO, out: EmbPattern, settings=None):
     csv_reader = csv.reader(f, delimiter=",")
     command_dict = get_command_dictionary()
     for row in csv_reader:

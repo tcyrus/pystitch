@@ -1,6 +1,7 @@
 from typing import BinaryIO
-from .EmbConstant import FAST, SLOW
-from .EmbPattern import EmbPattern
+
+from pystitch.EmbConstant import FAST, SLOW
+from pystitch.EmbPattern import EmbPattern
 
 
 def read_barudan_dat(f: BinaryIO, out: EmbPattern):

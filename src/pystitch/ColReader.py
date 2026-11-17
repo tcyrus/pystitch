@@ -1,13 +1,19 @@
-from typing import TextIO
-from .EmbPattern import EmbPattern
-from .EmbThread import *
+from io import TextIOWrapper
+from typing import BinaryIO, TextIO
 
-READ_FILE_IN_TEXT_MODE = True
+from pystitch.EmbPattern import EmbPattern
+from pystitch.EmbThread import EmbThread
 
 
-def read(f: TextIO, out: EmbPattern, settings=None):
+def read(f: BinaryIO, out: EmbPattern, settings=None):
+    _f = TextIOWrapper(f, errors="ignore")
+    _read(_f, out, settings)
+    _f.flush()
+    _f.detach()
+
+def _read(f: TextIO, out: EmbPattern, settings=None):
     count = int(f.readline())
-    for i in range(0, count):
+    for i in range(count):
         line = f.readline()
         splits = line.split(",")
         thread = EmbThread()

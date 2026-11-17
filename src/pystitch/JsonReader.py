@@ -1,8 +1,8 @@
 from typing import BinaryIO
 
-from .EmbFunctions import *
-from .EmbPattern import EmbPattern
-from .EmbThread import EmbThread
+from pystitch.EmbFunctions import get_command_dictionary
+from pystitch.EmbPattern import EmbPattern
+from pystitch.EmbThread import EmbThread
 
 
 def decoded_command(command_dict, name):

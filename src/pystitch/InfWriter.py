@@ -1,7 +1,12 @@
 from typing import BinaryIO
 
-from .EmbPattern import EmbPattern
-from .WriteHelper import write_int_8, write_int_16be, write_int_32be, write_string_utf8
+from pystitch.EmbPattern import EmbPattern
+from pystitch.WriteHelper import (
+    write_int_8,
+    write_int_16be,
+    write_int_32be,
+    write_string_utf8,
+)
 
 ENCODE = False
 

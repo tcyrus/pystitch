@@ -1,10 +1,9 @@
 import math
 from typing import BinaryIO
 
-from .EmbPattern import EmbPattern
-from .EmbConstant import *
-from .EmbThreadShv import get_thread_set
-from .ReadHelper import (
+from pystitch.EmbConstant import *
+from pystitch.EmbPattern import EmbPattern
+from pystitch.ReadHelper import (
     read_int_8,
     read_int_16be,
     read_int_32be,
@@ -12,6 +11,8 @@ from .ReadHelper import (
     signed8,
     signed16,
 )
+
+from .EmbThreadShv import get_thread_set
 
 
 def read(f: BinaryIO, out: EmbPattern, settings=None):

@@ -1,8 +1,8 @@
 from typing import BinaryIO
 
-from .EmbPattern import EmbPattern
-from .EmbThread import EmbThread
-from .ReadHelper import read_int_16be, read_int_32be
+from pystitch.EmbPattern import EmbPattern
+from pystitch.EmbThread import EmbThread
+from pystitch.ReadHelper import read_int_16be, read_int_32be
 
 
 def read(f: BinaryIO, out: EmbPattern, settings=None):

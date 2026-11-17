@@ -1,8 +1,9 @@
 from typing import BinaryIO
 
-from .EmbPattern import EmbPattern
-from .EmbFunctions import *
-from .WriteHelper import write_string_utf8
+from pystitch.EmbConstant import *
+from pystitch.EmbFunctions import get_common_name_dictionary
+from pystitch.EmbPattern import EmbPattern
+from pystitch.WriteHelper import write_string_utf8
 
 
 def write_mimic(pattern: EmbPattern, f: BinaryIO):

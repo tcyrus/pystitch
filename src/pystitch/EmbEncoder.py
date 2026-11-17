@@ -1,6 +1,7 @@
 import math
 
-from .EmbFunctions import *
+from .EmbConstant import *
+from .EmbFunctions import decode_embroidery_command, encode_thread_change
 from .EmbMatrix import EmbMatrix
 
 

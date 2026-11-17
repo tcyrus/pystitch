@@ -1,7 +1,7 @@
 from typing import BinaryIO
 
-from .EmbPattern import EmbPattern
-from .ReadHelper import read_int_32le, signed8
+from pystitch.EmbPattern import EmbPattern
+from pystitch.ReadHelper import read_int_32le, signed8
 
 
 def read_jpx_stitches(f: BinaryIO, out: EmbPattern):

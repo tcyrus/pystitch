@@ -1,10 +1,8 @@
 from typing import BinaryIO
 
-from .EmbConstant import *
-from .EmbPattern import EmbPattern
-from .EmbThreadPec import get_thread_set
-from .PecWriter import write_pec
-from .WriteHelper import (
+from pystitch.EmbConstant import *
+from pystitch.EmbPattern import EmbPattern
+from pystitch.WriteHelper import (
     write_float_32le,
     write_int_8,
     write_int_16le,
@@ -12,6 +10,9 @@ from .WriteHelper import (
     write_int_32le,
     write_string_utf8,
 )
+
+from .EmbThreadPec import get_thread_set
+from .PecWriter import write_pec
 
 SEQUIN_CONTINGENCY = CONTINGENCY_SEQUIN_JUMP
 FULL_JUMP = True

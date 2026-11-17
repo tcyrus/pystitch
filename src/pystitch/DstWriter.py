@@ -1,8 +1,8 @@
 from typing import BinaryIO
 
-from .EmbConstant import *
-from .EmbPattern import EmbPattern
-from .WriteHelper import write_string_utf8
+from pystitch.EmbConstant import *
+from pystitch.EmbPattern import EmbPattern
+from pystitch.WriteHelper import write_string_utf8
 
 SEQUIN_CONTINGENCY = CONTINGENCY_SEQUIN_UTILIZE
 FULL_JUMP = False

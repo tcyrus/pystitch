@@ -1,12 +1,17 @@
 import re
-from typing import TextIO
+from io import TextIOWrapper
+from typing import BinaryIO, TextIO
 
-from .EmbPattern import EmbPattern
-
-READ_FILE_IN_TEXT_MODE = True
+from pystitch.EmbPattern import EmbPattern
 
 
-def read(f: TextIO, out: EmbPattern, settings=None):
+def read(f: BinaryIO, out: EmbPattern, settings=None):
+    _f = TextIOWrapper(f, errors="ignore")
+    _read(_f, out, settings)
+    _f.flush()
+    _f.detach()
+
+def _read(f: TextIO, out: EmbPattern, settings=None):
     for line in f.readlines():
         line = line.strip()
         if line.startswith("PU"):
