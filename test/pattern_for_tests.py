@@ -1,8 +1,8 @@
 import math
 
-from pystitch import *
-from pystitch import EmbPattern
-from pystitch import encode_thread_change
+from pystitch import EmbPattern, encode_thread_change
+from pystitch.EmbConstant import *
+
 
 def evaluate_lsystem(symbol, rules, depth):
     if depth <= 0 or symbol not in rules:
@@ -165,7 +165,7 @@ def get_small_shift_pattern_needles():
     pattern += "khaki"
     pattern += "oldlace"
 
-    for needle in (3,2,1):
+    for needle in (3, 2, 1):
         pattern.needle_change(needle=needle)
         pattern += (0, 0), (0, 100), (100, 100), (100, 0), (0, 0)
         pattern.add_command(MATRIX_TRANSLATE, 25, 25)
@@ -276,7 +276,6 @@ def get_random_pattern_large(count=1000):
 def get_random_pattern_small():
     pattern = EmbPattern()
     import random
-
     pattern.add_block(
         [(random.uniform(-500, 500), random.uniform(-500, 500)),
          (random.uniform(-500, 500), random.uniform(-500, 500)),

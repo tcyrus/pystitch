@@ -1,9 +1,9 @@
 import unittest
 
+from pystitch import EmbPattern
+from pystitch.EmbConstant import *
 from test.pattern_for_tests import get_shift_pattern
 
-from pystitch import *
-from pystitch import EmbPattern
 
 class TestEmbpattern(unittest.TestCase):
 

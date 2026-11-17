@@ -1,30 +1,25 @@
-from pathlib import Path
-import unittest
 import tempfile
-
-from test.pattern_for_tests import get_fractal_pattern
+import unittest
 
 import pystitch
-from pystitch import GenericWriter, EmbPattern
+from pystitch import EmbPattern, GenericWriter
+from test.pattern_for_tests import get_fractal_pattern
 
 
 class TestConverts(unittest.TestCase):
     def test_generic_write_stitch(self):
         pattern = get_fractal_pattern()
 
-        with tempfile.TemporaryDirectory() as tmpdirname:
-            tmpdir = Path(tmpdirname)
+        with tempfile.NamedTemporaryFile(suffix=".dst") as fp:
+            pystitch.write(pattern, fp)
+            fp.seek(0)
+            pattern = pystitch.read(fp)
 
-            file1 = tmpdir / "convert.dst"
-            file2 = tmpdir / "convert.txt"
-
-            pystitch.write(pattern, file1)
-            pattern = pystitch.read(file1)
-
+        with tempfile.NamedTemporaryFile(suffix=".txt") as fp:
             EmbPattern.write_embroidery(
                 GenericWriter,
                 pattern,
-                file2,
+                fp,
                 {
                     "segment_start": "\t\t",
                     "segment_end": "\n",
@@ -70,21 +65,18 @@ class TestConverts(unittest.TestCase):
         pattern = get_fractal_pattern()
         pattern.fix_color_count()
 
-        with tempfile.TemporaryDirectory() as tmpdirname:
-            tmpdir = Path(tmpdirname)
+        with tempfile.NamedTemporaryFile(suffix=".gcode") as fp:
+            pystitch.write(pattern, fp)
+            fp.seek(0)
+            f1 = fp.read()
 
-            file1 = tmpdir / "file-gcode.gcode"
-            file2 = tmpdir / "file-generic.gcode"
-
-            pystitch.write(pattern, file1)
-            f1 = file1.read_bytes()
-
+        with tempfile.NamedTemporaryFile(suffix=".gcode") as fp:
             EmbPattern.write_embroidery(
                 GenericWriter,
                 pattern,
-                file2,
+                fp,
                 gcode_writer_dict,
             )
-            f2 = file2.read_bytes()
+            f2 = fp.read()
 
         self.assertEqual(f1, f2)

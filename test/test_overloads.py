@@ -1,9 +1,9 @@
 import unittest
 
+from pystitch import EmbMatrix, EmbPattern, EmbThread
+from pystitch.EmbConstant import *
 from test.pattern_for_tests import get_shift_pattern
 
-from pystitch import *
-from pystitch import EmbPattern, EmbThread, EmbMatrix
 
 class TestOverloads(unittest.TestCase):
 

@@ -1,11 +1,10 @@
-from pathlib import Path
-import unittest
 import tempfile
-
-from test.pattern_for_tests import get_shift_pattern
+import unittest
+from pathlib import Path
 
 import pystitch
 from pystitch import EmbPattern, EmbThread
+from test.pattern_for_tests import get_shift_pattern
 
 
 class TestColorFormats(unittest.TestCase):
@@ -41,7 +40,7 @@ class TestColorFormats(unittest.TestCase):
     def test_write_read_inf(self):
         with tempfile.TemporaryDirectory() as tmpdirname:
             file1 = Path(tmpdirname) / "color.inf"
-            for _ in range(0, 50):
+            for _ in range(50):
                 pattern = EmbPattern()
                 for _ in range(4, 20):
                     pattern.add_thread(EmbThread("random"))

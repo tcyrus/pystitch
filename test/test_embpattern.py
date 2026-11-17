@@ -1,12 +1,20 @@
-from pathlib import Path
 import tempfile
 import unittest
 
-from test.pattern_for_tests import get_shift_pattern, get_simple_pattern, get_random_pattern_small_halfs, get_random_pattern_large
-
-from pystitch import *
-from pystitch import EmbPattern, EmbThread
-from pystitch import encode_thread_change, decode_embroidery_command
+import pystitch
+from pystitch import (
+    EmbPattern,
+    EmbThread,
+    decode_embroidery_command,
+    encode_thread_change,
+)
+from pystitch.EmbConstant import *
+from test.pattern_for_tests import (
+    get_random_pattern_large,
+    get_random_pattern_small_halfs,
+    get_shift_pattern,
+    get_simple_pattern,
+)
 
 
 class TestEmbpattern(unittest.TestCase):
@@ -22,9 +30,9 @@ class TestEmbpattern(unittest.TestCase):
         self.assertEqual(0xFFFFFF & shift.threadlist[0].color, 0xFF0000)
         self.assertEqual(0xFFFFFF & shift.threadlist[1].color, 0x0000FF)
         with tempfile.NamedTemporaryFile(suffix=".pes") as fp:
-            write_pes(shift, fp, {"pes version": 6})
+            pystitch.write_pes(shift, fp, {"pes version": 6})
             fp.seek(0)
-            read_pattern = read_pes(fp)
+            read_pattern = pystitch.read_pes(fp)
         for thread in read_pattern.threadlist:
             print(0xFFFFFF & thread.color)
         self.assertEqual((0xFFFFFF & read_pattern.threadlist[0].color), 0x0000FF)
@@ -36,9 +44,9 @@ class TestEmbpattern(unittest.TestCase):
         shift.add_command(encode_thread_change(SET_CHANGE_SEQUENCE, 4, 6, 7))
         shift.add_command(encode_thread_change(SET_CHANGE_SEQUENCE, None, 3, 0))
         with tempfile.NamedTemporaryFile(suffix=".u01") as fp:
-            write_u01(shift, fp, {"needle_count": 7})
+            pystitch.write_u01(shift, fp, {"needle_count": 7})
             fp.seek(0)
-            needle_pattern = read_u01(fp)
+            needle_pattern = pystitch.read_u01(fp)
         self.assertEqual(needle_pattern.count_stitch_commands(NEEDLE_SET), 16)
         first = True
         for stitch in needle_pattern.get_match_commands(NEEDLE_SET):
@@ -52,9 +60,9 @@ class TestEmbpattern(unittest.TestCase):
     def test_needle_count_limit1(self):
         shift = get_shift_pattern()
         with tempfile.NamedTemporaryFile(suffix=".u01") as fp:
-            write_u01(shift, fp, {"needle_count": 1})
+            pystitch.write_u01(shift, fp, {"needle_count": 1})
             fp.seek(0)
-            needle_pattern = read_u01(fp)
+            needle_pattern = pystitch.read_u01(fp)
         self.assertEqual(needle_pattern.count_stitch_commands(STOP), 16)
         for stitch in needle_pattern.get_match_commands(NEEDLE_SET):
             cmd = decode_embroidery_command(stitch[2])
@@ -63,9 +71,9 @@ class TestEmbpattern(unittest.TestCase):
     def test_needle_count_limit2(self):
         shift = get_shift_pattern()
         with tempfile.NamedTemporaryFile(suffix=".u01") as fp:
-            write_u01(shift, fp, {"needle_count": 2})
+            pystitch.write_u01(shift, fp, {"needle_count": 2})
             fp.seek(0)
-            needle_pattern = read_u01(fp)
+            needle_pattern = pystitch.read_u01(fp)
         for stitch in needle_pattern.get_match_commands(NEEDLE_SET):
             cmd = decode_embroidery_command(stitch[2])
             self.assertLessEqual(cmd[2], 2)
@@ -74,9 +82,9 @@ class TestEmbpattern(unittest.TestCase):
     def test_needle_count_limit3(self):
         shift = get_shift_pattern()
         with tempfile.NamedTemporaryFile(suffix=".u01") as fp:
-            write_u01(shift, fp, {"needle_count": 3})
+            pystitch.write_u01(shift, fp, {"needle_count": 3})
             fp.seek(0)
-            needle_pattern = read_u01(fp)
+            needle_pattern = pystitch.read_u01(fp)
         for stitch in needle_pattern.get_match_commands(NEEDLE_SET):
             cmd = decode_embroidery_command(stitch[2])
             self.assertLessEqual(cmd[2], 3)
@@ -85,9 +93,9 @@ class TestEmbpattern(unittest.TestCase):
     def test_needle_count_limit4(self):
         shift = get_shift_pattern()
         with tempfile.NamedTemporaryFile(suffix=".u01") as fp:
-            write_u01(shift, fp, {"needle_count": 4})
+            pystitch.write_u01(shift, fp, {"needle_count": 4})
             fp.seek(0)
-            needle_pattern = read_u01(fp)
+            needle_pattern = pystitch.read_u01(fp)
         for stitch in needle_pattern.get_match_commands(NEEDLE_SET):
             cmd = decode_embroidery_command(stitch[2])
             self.assertLessEqual(cmd[2], 4)
@@ -96,9 +104,9 @@ class TestEmbpattern(unittest.TestCase):
     def test_needle_count_limit5(self):
         shift = get_shift_pattern()
         with tempfile.NamedTemporaryFile(suffix=".u01") as fp:
-            write_u01(shift, fp, {"needle_count": 5})
+            pystitch.write_u01(shift, fp, {"needle_count": 5})
             fp.seek(0)
-            needle_pattern = read_u01(fp)
+            needle_pattern = pystitch.read_u01(fp)
         for stitch in needle_pattern.get_match_commands(NEEDLE_SET):
             cmd = decode_embroidery_command(stitch[2])
             self.assertLessEqual(cmd[2], 5)
@@ -107,9 +115,9 @@ class TestEmbpattern(unittest.TestCase):
     def test_needle_count_limit6(self):
         shift = get_shift_pattern()
         with tempfile.NamedTemporaryFile(suffix=".u01") as fp:
-            write_u01(shift, fp, {"needle_count": 6})
+            pystitch.write_u01(shift, fp, {"needle_count": 6})
             fp.seek(0)
-            needle_pattern = read_u01(fp)
+            needle_pattern = pystitch.read_u01(fp)
         for stitch in needle_pattern.get_match_commands(NEEDLE_SET):
             cmd = decode_embroidery_command(stitch[2])
             self.assertLessEqual(cmd[2], 6)
@@ -118,9 +126,9 @@ class TestEmbpattern(unittest.TestCase):
     def test_needle_count_limit7(self):
         shift = get_shift_pattern()
         with tempfile.NamedTemporaryFile(suffix=".u01") as fp:
-            write_u01(shift, fp, {"needle_count": 7})
+            pystitch.write_u01(shift, fp, {"needle_count": 7})
             fp.seek(0)
-            needle_pattern = read_u01(fp)
+            needle_pattern = pystitch.read_u01(fp)
         for stitch in needle_pattern.get_match_commands(NEEDLE_SET):
             cmd = decode_embroidery_command(stitch[2])
             self.assertLessEqual(cmd[2], 7)
@@ -129,9 +137,9 @@ class TestEmbpattern(unittest.TestCase):
     def test_needle_count_limit8(self):
         shift = get_shift_pattern()
         with tempfile.NamedTemporaryFile(suffix=".u01") as fp:
-            write_u01(shift, fp, {"needle_count": 8})
+            pystitch.write_u01(shift, fp, {"needle_count": 8})
             fp.seek(0)
-            needle_pattern = read_u01(fp)
+            needle_pattern = pystitch.read_u01(fp)
         for stitch in needle_pattern.get_match_commands(NEEDLE_SET):
             cmd = decode_embroidery_command(stitch[2])
             self.assertLessEqual(cmd[2], 8)
@@ -140,9 +148,9 @@ class TestEmbpattern(unittest.TestCase):
     def test_needle_count_limit9(self):
         shift = get_shift_pattern()
         with tempfile.NamedTemporaryFile(suffix=".u01") as fp:
-            write_u01(shift, fp, {"needle_count": 9})
+            pystitch.write_u01(shift, fp, {"needle_count": 9})
             fp.seek(0)
-            needle_pattern = read_u01(fp)
+            needle_pattern = pystitch.read_u01(fp)
         for stitch in needle_pattern.get_match_commands(NEEDLE_SET):
             cmd = decode_embroidery_command(stitch[2])
             self.assertLessEqual(cmd[2], 9)
@@ -151,9 +159,9 @@ class TestEmbpattern(unittest.TestCase):
     def test_needle_count_limit10(self):
         shift = get_shift_pattern()
         with tempfile.NamedTemporaryFile(suffix=".u01") as fp:
-            write_u01(shift, fp, {"needle_count": 10})
+            pystitch.write_u01(shift, fp, {"needle_count": 10})
             fp.seek(0)
-            needle_pattern = read_u01(fp)
+            needle_pattern = pystitch.read_u01(fp)
         for stitch in needle_pattern.get_match_commands(NEEDLE_SET):
             cmd = decode_embroidery_command(stitch[2])
             self.assertLessEqual(cmd[2], 10)
@@ -162,9 +170,9 @@ class TestEmbpattern(unittest.TestCase):
     def test_u01_tie_on(self):
         shift = get_shift_pattern()
         with tempfile.NamedTemporaryFile(suffix=".u01") as fp:
-            write_u01(shift, fp, {"needle_count": 10, "tie_on": CONTINGENCY_TIE_ON_THREE_SMALL})
+            pystitch.write_u01(shift, fp, {"needle_count": 10, "tie_on": CONTINGENCY_TIE_ON_THREE_SMALL})
             fp.seek(0)
-            needle_pattern = read_u01(fp)
+            needle_pattern = pystitch.read_u01(fp)
         for stitch in needle_pattern.get_match_commands(NEEDLE_SET):
             cmd = decode_embroidery_command(stitch[2])
             self.assertLessEqual(cmd[2], 10)
@@ -175,9 +183,12 @@ class TestEmbpattern(unittest.TestCase):
     def test_u01_tie_off(self):
         shift = get_shift_pattern()
         with tempfile.NamedTemporaryFile(suffix=".u01") as fp:
-            write_u01(get_shift_pattern(), fp, {"needle_count": 10, "tie_off": CONTINGENCY_TIE_OFF_THREE_SMALL})
+            pystitch.write_u01(
+                shift, fp,
+                {"needle_count": 10, "tie_off": CONTINGENCY_TIE_OFF_THREE_SMALL}
+            )
             fp.seek(0)
-            needle_pattern = read_u01(fp)
+            needle_pattern = pystitch.read_u01(fp)
         for stitch in needle_pattern.get_match_commands(NEEDLE_SET):
             cmd = decode_embroidery_command(stitch[2])
             self.assertLessEqual(cmd[2], 10)
@@ -190,9 +201,9 @@ class TestEmbpattern(unittest.TestCase):
         pattern.add_block([(0, 0), (0, 200)], "red")
 
         with tempfile.NamedTemporaryFile(suffix=".dst") as fp:
-            write_dst(pattern, fp)
+            pystitch.write_dst(pattern, fp)
             fp.seek(0)
-            dst_pattern = read_dst(fp)
+            dst_pattern = pystitch.read_dst(fp)
 
         self.assertIsNotNone(dst_pattern)
         self.assertEqual(dst_pattern.count_stitch_commands(STITCH), 2)
@@ -201,13 +212,16 @@ class TestEmbpattern(unittest.TestCase):
 
     def test_write_dst_read_dst_random_stitch(self):
         with tempfile.NamedTemporaryFile(suffix=".dst") as fp:
-            for i in range(0, 12):
+            for i in range(12):
                 max = (i * 10) + 1
                 pattern = get_random_pattern_small_halfs()
-                write_dst(pattern, fp,
-                        {"long_stitch_contingency": CONTINGENCY_LONG_STITCH_SEW_TO, "max_stitch": max})
+                pystitch.write_dst(
+                    pattern, fp,
+                    {"long_stitch_contingency": CONTINGENCY_LONG_STITCH_SEW_TO, "max_stitch": max}
+                )
                 fp.seek(0)
-                dst_pattern = read_dst(fp)
+                dst_pattern = pystitch.read_dst(fp)
+                self.assertIsNotNone(dst_pattern)
                 xx = 0
                 yy = 0
                 command = NO_COMMAND
@@ -221,26 +235,29 @@ class TestEmbpattern(unittest.TestCase):
                     if command == STITCH and last_command == STITCH:
                         self.assertLessEqual(dx, max)
                         self.assertLessEqual(dy, max)
-                self.assertIsNotNone(dst_pattern)
 
     def test_write_dst_read_dst_long_jump_random_small(self):
         with tempfile.NamedTemporaryFile(suffix=".dst") as fp:
-            for i in range(0, 1000):
+            for _ in range(1000):
                 pattern = get_random_pattern_small_halfs()
-                write_dst(pattern, fp,
-                        {"long_stitch_contingency": CONTINGENCY_LONG_STITCH_SEW_TO})
+                pystitch.write_dst(
+                    pattern, fp,
+                    {"long_stitch_contingency": CONTINGENCY_LONG_STITCH_SEW_TO}
+                )
                 fp.seek(0)
-                dst_pattern = read_dst(fp)
+                dst_pattern = pystitch.read_dst(fp)
                 self.assertIsNotNone(dst_pattern)
 
     def test_write_dst_read_dst_long_jump_random_large(self):
         with tempfile.NamedTemporaryFile(suffix=".dst") as fp:
-            for i in range(0, 5):
+            for _ in range(5):
                 pattern = get_random_pattern_large()
-                write_dst(pattern, fp,
-                        {"long_stitch_contingency": CONTINGENCY_LONG_STITCH_SEW_TO})
+                pystitch.write_dst(
+                    pattern, fp,
+                    {"long_stitch_contingency": CONTINGENCY_LONG_STITCH_SEW_TO}
+                )
                 fp.seek(0)
-                dst_pattern = read_dst(fp)
+                dst_pattern = pystitch.read_dst(fp)
                 self.assertIsNotNone(dst_pattern)
 
     def test_write_dst_read_dst_divide(self):
@@ -248,9 +265,11 @@ class TestEmbpattern(unittest.TestCase):
         pattern.add_block([(0, 0), (0, 2)], "red")
 
         with tempfile.NamedTemporaryFile(suffix=".dst") as fp:
-            write_dst(pattern, fp, {"scale": 100, "long_stitch_contingency": CONTINGENCY_LONG_STITCH_SEW_TO})
+            pystitch.write_dst(
+                pattern, fp, {"scale": 100, "long_stitch_contingency": CONTINGENCY_LONG_STITCH_SEW_TO}
+            )
             fp.seek(0)
-            dst_pattern = read_dst(fp)
+            dst_pattern = pystitch.read_dst(fp)
 
         self.assertIsNotNone(dst_pattern)
         self.assertEqual(dst_pattern.count_stitch_commands(STITCH), 3)
@@ -259,10 +278,12 @@ class TestEmbpattern(unittest.TestCase):
 
     def test_write_csv_read_csv_raw(self):
         pattern = get_simple_pattern()
-        with tempfile.TemporaryDirectory() as tmpdirname:
-            file1 = Path(tmpdirname) / "file.csv"
-            write_csv(pattern, file1)
-            csv_pattern = read_csv(file1)
+
+        with tempfile.NamedTemporaryFile(suffix=".csv") as fp:
+            pystitch.write_csv(pattern, fp)
+            fp.seek(0)
+            csv_pattern = pystitch.read_csv(fp)
+
         self.assertIsNotNone(csv_pattern)
         self.assertEqual(csv_pattern.count_stitch_commands(COLOR_BREAK), 3)
         self.assertEqual(csv_pattern.count_stitch_commands(STITCH), 15)
@@ -271,10 +292,15 @@ class TestEmbpattern(unittest.TestCase):
 
     def test_write_csv_read_csv_needle(self):
         pattern = get_simple_pattern()
-        with tempfile.TemporaryDirectory() as tmpdirname:
-            file2 = Path(tmpdirname) / "file2.csv"
-            write_csv(pattern, file2, {"thread_change_command": NEEDLE_SET, "encode": True})
-            csv_pattern = read_csv(file2)
+
+        with tempfile.NamedTemporaryFile(suffix=".csv") as fp:
+            pystitch.write_csv(
+                pattern, fp,
+                {"thread_change_command": NEEDLE_SET, "encode": True}
+            )
+            fp.seek(0)
+            csv_pattern = pystitch.read_csv(fp)
+
         self.assertIsNotNone(csv_pattern)
         self.assertEqual(csv_pattern.count_stitch_commands(NEEDLE_SET), 3)
         self.assertEqual(csv_pattern.count_stitch_commands(STITCH), 15)
@@ -282,10 +308,16 @@ class TestEmbpattern(unittest.TestCase):
 
     def test_write_csv_read_csv_color(self):
         pattern = get_simple_pattern()
-        with tempfile.TemporaryDirectory() as tmpdirname:
-            file3 = Path(tmpdirname) / "file3.csv"
-            write_csv(pattern, file3, {"thread_change_command": COLOR_CHANGE, "encode": True})
-            csv_pattern = read_csv(file3)
+
+        with tempfile.NamedTemporaryFile(suffix=".csv") as fp:
+            pystitch.write_csv(
+                pattern, fp,
+                {"thread_change_command": COLOR_CHANGE, "encode": True}
+            )
+            fp.seek(0)
+            csv_pattern = pystitch.read_csv(fp)
+
+        self.assertIsNotNone(csv_pattern)
         self.assertEqual(csv_pattern.count_stitch_commands(COLOR_CHANGE), 2)
         self.assertEqual(csv_pattern.count_stitch_commands(STITCH), 15)
         self.position_equals(csv_pattern.stitches, 0, -1)
@@ -295,10 +327,12 @@ class TestEmbpattern(unittest.TestCase):
         pattern = EmbPattern()
         encoded_command = encode_thread_change(SET_CHANGE_SEQUENCE, 3, 4, 1)
         pattern.add_command(encoded_command)
-        with tempfile.TemporaryDirectory() as tmpdirname:
-            file1 = Path(tmpdirname) / "file-encoded.csv"
-            write_csv(pattern, file1)
-            csv_pattern = read_csv(file1)
+
+        with tempfile.NamedTemporaryFile(suffix=".csv") as fp:
+            pystitch.write_csv(pattern, fp)
+            fp.seek(0)
+            csv_pattern = pystitch.read_csv(fp)
+
         self.assertIsNotNone(csv_pattern)
         print("csv-encoded: ", csv_pattern.stitches)
         self.assertEqual(encoded_command, csv_pattern.stitches[-1][2])
