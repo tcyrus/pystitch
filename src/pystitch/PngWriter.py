@@ -1,11 +1,11 @@
 import struct
 import zlib
-from typing import BinaryIO
 from math import sqrt
+from typing import BinaryIO
 
-from .EmbPattern import EmbPattern
-from .EmbConstant import *
-from .EmbThread import EmbThread
+from pystitch.EmbConstant import *
+from pystitch.EmbPattern import EmbPattern
+from pystitch.EmbThread import EmbThread
 
 SEQUIN_CONTINGENCY = CONTINGENCY_SEQUIN_STITCH
 FULL_JUMP = True

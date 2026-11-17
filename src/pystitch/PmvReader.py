@@ -1,7 +1,7 @@
 from typing import BinaryIO
 
-from .EmbPattern import EmbPattern
-from .ReadHelper import read_int_8, read_int_16le
+from pystitch.EmbPattern import EmbPattern
+from pystitch.ReadHelper import read_int_8, read_int_16le
 
 
 def find_extends(stitches):

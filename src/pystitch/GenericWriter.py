@@ -1,24 +1,25 @@
 from typing import BinaryIO
 
-import pystitch
-from pystitch import (
-    CONTINGENCY_SEQUIN_UTILIZE,
-    decode_embroidery_command,
-    STITCH,
+from pystitch.EmbConstant import (
     COLOR_CHANGE,
-    NEEDLE_SET,
-    TRIM,
-    JUMP,
-    SEQUIN_MODE,
-    SEQUIN_EJECT,
-    STOP,
-    SLOW,
-    FAST,
-    END,
-    get_common_name_dictionary,
     COMMAND_MASK,
+    CONTINGENCY_SEQUIN_UTILIZE,
+    END,
+    FAST,
+    JUMP,
+    NEEDLE_SET,
+    SEQUIN_EJECT,
+    SEQUIN_MODE,
+    SLOW,
+    STITCH,
+    STOP,
+    TRIM,
 )
-from .EmbPattern import EmbPattern
+from pystitch.EmbFunctions import (
+    decode_embroidery_command,
+    get_common_name_dictionary,
+)
+from pystitch.EmbPattern import EmbPattern
 from pystitch.WriteHelper import write_string_utf8
 
 WRITES_SPEEDS = True
@@ -285,7 +286,7 @@ class GenericWriter:
             self.cmd, self.thread, self.needle, self.order = decode_embroidery_command(
                 self.command
             )
-            self.cmd_str = pystitch.get_common_name_dictionary()[self.cmd]
+            self.cmd_str = get_common_name_dictionary()[self.cmd]
         except IndexError:
             self.current_stitch = None
             self.x = None

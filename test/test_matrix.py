@@ -1,8 +1,9 @@
-import unittest
 import tempfile
+import unittest
 
-from pystitch import *
+import pystitch
 from pystitch import EmbMatrix, EmbPattern
+from pystitch.EmbConstant import *
 
 
 class TestMatrix(unittest.TestCase):
@@ -59,7 +60,7 @@ class TestMatrix(unittest.TestCase):
         self.assertAlmostEqual(pattern.stitches[4][0], pattern.stitches[12][0])
         self.assertAlmostEqual(pattern.stitches[4][1], pattern.stitches[12][1])
         with tempfile.NamedTemporaryFile(suffix=".svg") as fp:
-            write_svg(pattern, fp)
+            pystitch.write_svg(pattern, fp)
 
     def test_matrix_translate(self):
         pattern = EmbPattern()
@@ -76,7 +77,7 @@ class TestMatrix(unittest.TestCase):
         self.assertAlmostEqual(pattern.stitches[4][0], pattern.stitches[12][0])
         self.assertAlmostEqual(pattern.stitches[4][1], pattern.stitches[12][1])
         with tempfile.NamedTemporaryFile(suffix=".svg") as fp:
-            write_svg(pattern, fp)
+            pystitch.write_svg(pattern, fp)
 
     def test_matrix_translate_rotate(self):
         pattern = EmbPattern()
@@ -93,7 +94,7 @@ class TestMatrix(unittest.TestCase):
         self.assertAlmostEqual(pattern.stitches[14][0], 140)
         self.assertAlmostEqual(pattern.stitches[14][1], -120)
         with tempfile.NamedTemporaryFile(suffix=".svg") as fp:
-            write_svg(pattern, fp)
+            pystitch.write_svg(pattern, fp)
 
     def test_matrix_translate_scale(self):
         pattern = EmbPattern()
@@ -110,4 +111,4 @@ class TestMatrix(unittest.TestCase):
         self.assertAlmostEqual(pattern.stitches[13][0], 50)
         self.assertAlmostEqual(pattern.stitches[13][1], 290)
         with tempfile.NamedTemporaryFile(suffix=".svg") as fp:
-            write_svg(pattern, fp)
+            pystitch.write_svg(pattern, fp)

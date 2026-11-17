@@ -1,8 +1,9 @@
 from typing import BinaryIO
 
-from .EmbPattern import EmbPattern
+from pystitch.EmbPattern import EmbPattern
+from pystitch.ReadHelper import read_int_8, read_int_24le, read_string_8
+
 from .EmbThreadPec import get_thread_set
-from .ReadHelper import read_int_8, read_int_24le, read_string_8
 
 JUMP_CODE = 0x10
 TRIM_CODE = 0x20

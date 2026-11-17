@@ -1,18 +1,19 @@
 import re
 from typing import BinaryIO
 
-from .EmbConstant import *
-from .EmbPattern import EmbPattern
-from .EmbThread import build_unique_palette
-from .EmbThreadPec import get_thread_set
-from .PecGraphics import draw_scaled, get_blank
-from .exceptions import TooManyColorChangesError
-from .WriteHelper import (
+from pystitch.EmbConstant import *
+from pystitch.EmbPattern import EmbPattern
+from pystitch.EmbThread import build_unique_palette
+from pystitch.exceptions import TooManyColorChangesError
+from pystitch.WriteHelper import (
     write_int_8,
     write_int_16le,
     write_int_24le,
     write_string_utf8,
 )
+
+from .EmbThreadPec import get_thread_set
+from .PecGraphics import draw_scaled, get_blank
 
 SEQUIN_CONTINGENCY = CONTINGENCY_SEQUIN_JUMP
 FULL_JUMP = True
@@ -33,7 +34,7 @@ GROUP_LONG = False
 def write(pattern: EmbPattern, f: BinaryIO, settings=None):
     pattern.fix_color_count()
     pattern.interpolate_stop_as_duplicate_color()
-    f.write(bytes("#PEC0001".encode("utf8")))
+    f.write(b"#PEC0001")
     write_pec(pattern, f)
 
 

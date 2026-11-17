@@ -1,7 +1,8 @@
 from typing import BinaryIO
 
+from pystitch.EmbPattern import EmbPattern
+
 from .DszReader import z_stitch_encoding_read
-from .EmbPattern import EmbPattern
 
 
 def read(f: BinaryIO, out: EmbPattern, settings=None):

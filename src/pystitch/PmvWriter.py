@@ -1,8 +1,8 @@
 from typing import BinaryIO
 
-from .EmbPattern import EmbPattern
-from .EmbConstant import *
-from .WriteHelper import write_int_8, write_int_16le, write_string_utf8
+from pystitch.EmbConstant import *
+from pystitch.EmbPattern import EmbPattern
+from pystitch.WriteHelper import write_int_8, write_int_16le, write_string_utf8
 
 MAX_STITCH_DISTANCE = 70
 MAX_PERMITTED_STITCHES = 100

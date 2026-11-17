@@ -1,7 +1,7 @@
-import unittest
-from pathlib import Path
 import os
 import re
+import unittest
+from pathlib import Path
 
 import pystitch
 

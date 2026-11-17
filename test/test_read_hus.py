@@ -1,7 +1,8 @@
 import random
 import unittest
 
-from pystitch.EmbCompress import expand, compress
+from pystitch.EmbCompress import compress, expand
+
 
 @unittest.skip("")
 class TestReadHus(unittest.TestCase):

@@ -1,7 +1,7 @@
 from typing import BinaryIO
 
-from .EmbPattern import EmbPattern
-from .ReadHelper import signed8
+from pystitch.EmbPattern import EmbPattern
+from pystitch.ReadHelper import signed8
 
 
 def read_emd_stitches(f: BinaryIO, out: EmbPattern):

@@ -1,8 +1,9 @@
 import os
 from pathlib import PurePath
 
+from .EmbConstant import *
 from .EmbEncoder import Transcoder as Normalizer
-from .EmbFunctions import *
+from .EmbFunctions import decode_embroidery_command, encode_thread_change
 from .EmbThread import EmbThread
 
 
@@ -76,22 +77,20 @@ class EmbPattern:
     def __iadd__(self, other):
         if isinstance(other, EmbPattern):
             self.add_pattern(other)
-        elif isinstance(other, EmbThread) or isinstance(other, str):
+        elif isinstance(other, (EmbThread, str)):
             self.add_thread(other)
-            for i in range(0, len(self.stitches)):
+            for i in range(len(self.stitches)):
                 data = self.stitches[i][2] & COMMAND_MASK
                 if data == STITCH or data == SEW_TO or data == NEEDLE_AT:
                     self.color_change()
                     break  # Only add color change if stitching exists.
         elif isinstance(other, int):
             self.add_command(other)
-        elif isinstance(other, list) or isinstance(other, tuple):  # tuple or list
+        elif isinstance(other, (list, tuple)):  # tuple or list
             if len(other) == 0:
                 return self
             v = other[0]
-            if isinstance(v, list) or isinstance(
-                v, tuple
-            ):  # tuple or list of tuple or lists
+            if isinstance(v, (list, tuple)):  # tuple or list of tuple or lists
                 for v in other:
                     x = v[0]
                     y = v[1]
@@ -105,9 +104,7 @@ class EmbPattern:
                     x = v.real
                     y = v.imag
                     self.add_stitch_absolute(STITCH, x, y)
-            elif isinstance(v, int) or isinstance(
-                v, float
-            ):  # tuple or list of numbers.
+            elif isinstance(v, (int, float)):  # tuple or list of numbers.
                 i = 0
                 ie = len(other)
                 while i < ie:
@@ -116,7 +113,7 @@ class EmbPattern:
             elif isinstance(v, str):
                 self.extras[v] = other[1]
         else:
-            raise ValueError()
+            raise TypeError()
         return self
 
     def __add__(self, other):
@@ -424,7 +421,7 @@ class EmbPattern:
         while len(self.threadlist) < thread_index:
             self.add_thread(self.get_thread_or_filler(len(self.threadlist)))
 
-    def add_stitch_absolute(self, cmd, x=0, y=0):
+    def add_stitch_absolute(self, cmd, x: float = 0, y: float = 0):
         """Add a command at the absolute location: x, y"""
         self.stitches.append([x, y, cmd])
         self._previousX = x
@@ -473,11 +470,11 @@ class EmbPattern:
         if block is None:
             return
 
-        if isinstance(block, list) or isinstance(block, tuple):
+        if isinstance(block, (list, tuple)):
             if len(block) == 0:
                 return
             v = block[0]
-            if isinstance(v, list) or isinstance(v, tuple):
+            if isinstance(v, (list, tuple)):
                 for v in block:
                     x = v[0]
                     y = v[1]
@@ -491,7 +488,7 @@ class EmbPattern:
                     x = v.real
                     y = v.imag
                     self.add_stitch_absolute(STITCH, x, y)
-            elif isinstance(v, int) or isinstance(v, float):
+            elif isinstance(v, (int, float)):
                 i = 0
                 ie = len(block)
                 while i < ie:
@@ -805,16 +802,8 @@ class EmbPattern:
             pattern = EmbPattern()
 
         if isinstance(f, (str, os.PathLike)):
-            text_mode = getattr(reader, "READ_FILE_IN_TEXT_MODE", False)
-            if text_mode:
-                try:
-                    with open(f, "r", errors='ignore') as stream:
-                        return EmbPattern.read_embroidery(reader, stream, settings, pattern)
-                except IOError:
-                    return pattern
-            else:
-                with open(f, "rb") as stream:
-                    return EmbPattern.read_embroidery(reader, stream, settings, pattern)
+            with open(f, "rb") as stream:
+                return EmbPattern.read_embroidery(reader, stream, settings, pattern)
 
         reader.read(f, pattern, settings)
 
@@ -822,14 +811,12 @@ class EmbPattern:
 
 
     @staticmethod
-    def write_embroidery(writer, pattern, stream, settings=None):
+    def write_embroidery(writer, pattern, f, settings=None):
         if pattern is None:
             return
 
-        if isinstance(stream, (str, os.PathLike)):
-            text_mode = getattr(writer, "WRITE_FILE_IN_TEXT_MODE", False)
-            file_mode = "w" if text_mode else "wb"
-            with open(stream, file_mode) as stream:
+        if isinstance(f, (str, os.PathLike)):
+            with open(f, "wb") as stream:
                 return EmbPattern.write_embroidery(writer, pattern, stream, settings)
 
         if settings is None:
@@ -897,4 +884,4 @@ class EmbPattern:
                     pass
             pattern = pattern.get_normalized_pattern(settings)
 
-        writer.write(pattern, stream, settings)
+        writer.write(pattern, f, settings)

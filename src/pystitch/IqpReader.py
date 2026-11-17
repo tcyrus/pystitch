@@ -1,8 +1,8 @@
 import struct
 from typing import BinaryIO
 
-from .EmbPattern import EmbPattern
-from .EmbThread import EmbThread
+from pystitch.EmbPattern import EmbPattern
+from pystitch.EmbThread import EmbThread
 
 TENTH_MM_PER_INCH = 254
 

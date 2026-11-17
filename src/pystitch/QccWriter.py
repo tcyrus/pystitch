@@ -1,14 +1,13 @@
-import sys
 from typing import BinaryIO
 
-from .EmbPattern import EmbPattern
-from .EmbFunctions import *
-from .WriteHelper import write_string_utf8
+from pystitch.EmbConstant import *
+from pystitch.EmbPattern import EmbPattern
+from pystitch.WriteHelper import write_string_utf8
 
 TENTH_MM_PER_INCH = 254
 
 
-def write(pattern: EmbPattern, stream, settings=None):
+def write(pattern: EmbPattern, stream: BinaryIO, settings=None):
     write_string_utf8(stream, "c s\n")
 
     trimmed = True

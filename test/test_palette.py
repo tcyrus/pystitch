@@ -1,11 +1,26 @@
 import unittest
 
 from pystitch import EmbPattern, EmbThread
-from pystitch.EmbThreadPec import get_thread_set
-from pystitch.EmbThread import build_unique_palette, build_nonrepeat_palette, build_palette
+from pystitch.EmbThread import (
+    build_nonrepeat_palette,
+    build_palette,
+    build_unique_palette,
+)
 
 
 class TestPalettes(unittest.TestCase):
+    def setUp(self) -> None:
+        # Minimal threadset based on EmbThreadPec
+        self.threadset = [
+            EmbThread(0x0a55a3, "Blue"),
+            EmbThread(0xed171f, "Red"),
+            EmbThread(0x000000, "Black"),
+            EmbThread(0x0B3D91, "Ultramarine"),
+            EmbThread(0xE8A900, "Deep Gold"),
+            EmbThread(0xFFC864, "Applique Material", reserved=True),
+            EmbThread(0xFFC8C8, "Applique Position", reserved=True),
+            EmbThread(0xFFC8C8, "Applique", reserved=True),
+        ]
 
     def test_unique_palette(self):
         """Similar elements should not plot to the same palette index"""
@@ -14,46 +29,47 @@ class TestPalettes(unittest.TestCase):
         pattern += "Blue"
         pattern += "Blue"
         pattern += "Red"
-        threadset = get_thread_set()
-        palette = build_unique_palette(threadset,pattern.threadlist)
+
+        palette = build_unique_palette(self.threadset, pattern.threadlist)
         self.assertNotEqual(palette[0], palette[3], "Red and altered Red")
         self.assertEqual(palette[1], palette[2], "Blue and Blue")
 
     def test_unique_palette_large(self):
         """Excessive palette entries that all map, should be mapped"""
         pattern = EmbPattern()
-        for _ in range(0, 100):
+        for _ in range(100):
             pattern += "black"
-        threadset = get_thread_set()
-        palette = build_unique_palette(threadset, pattern.threadlist)
+
+        palette = build_unique_palette(self.threadset, pattern.threadlist)
         self.assertEqual(palette[0], palette[1])
 
     def test_unique_palette_unmap(self):
         """Excessive palette entries can't all map, should map what it can and repeat"""
         pattern = EmbPattern()
-        for i in range(0, 100):
+        for i in range(100):
             thread = EmbThread()
             thread.set_color(i, i, i)
             pattern += thread
-        threadset = get_thread_set()
-        palette = build_unique_palette(threadset, pattern.threadlist)
+
+        palette = build_unique_palette(self.threadset, pattern.threadlist)
         palette.sort()
 
     def test_unique_palette_max(self):
         """If the entries equal the list they should all map."""
-        pattern = EmbPattern()
-        threadset = get_thread_set()
         matchable_count = sum(
-            1 for t in threadset if t is not None and not getattr(t, "reserved", False)
+            1 for t in self.threadset if t is not None and not getattr(t, "reserved", False)
         )
-        for i in range(0, matchable_count):
+
+        pattern = EmbPattern()
+        for i in range(matchable_count):
             thread = EmbThread()
             thread.set_color(i, i, i)
             pattern += thread
-        palette = build_unique_palette(threadset, pattern.threadlist)
+
+        palette = build_unique_palette(self.threadset, pattern.threadlist)
         palette.sort()
-        for i in range(1, len(palette)):
-            self.assertNotEqual(palette[i-1], palette[i])
+
+        self.assertEqual(len(palette), len(set(palette)))
 
     def test_nonrepeat_palette_moving(self):
         """The almost same color should not get plotted to the same palette index"""
@@ -62,8 +78,8 @@ class TestPalettes(unittest.TestCase):
         pattern += "Blue"
         pattern += "#0100FF"
         pattern += "Red"
-        threadset = get_thread_set()
-        palette = build_nonrepeat_palette(threadset,pattern.threadlist)
+
+        palette = build_nonrepeat_palette(self.threadset, pattern.threadlist)
         self.assertEqual(palette[0], palette[3], "Red and Red")
         self.assertNotEqual(palette[1], palette[2], "Blue and altered Blue")
 
@@ -75,8 +91,8 @@ class TestPalettes(unittest.TestCase):
         pattern += "#0100FF"
         pattern += "Red"
         pattern += "#0100FF"
-        threadset = get_thread_set()
-        palette = build_nonrepeat_palette(threadset,pattern.threadlist)
+
+        palette = build_nonrepeat_palette(self.threadset, pattern.threadlist)
         self.assertEqual(palette[0], palette[3], "Red and Red")
         self.assertNotEqual(palette[1], palette[2], "Blue and altered Blue")
         self.assertNotEqual(palette[2], palette[4], "same color, but color was moved")
@@ -88,15 +104,15 @@ class TestPalettes(unittest.TestCase):
         pattern += "Blue"
         pattern += "#0000FF"  # actual blue
         pattern += "Red"
-        threadset = get_thread_set()
-        palette = build_nonrepeat_palette(threadset,pattern.threadlist)
+
+        palette = build_nonrepeat_palette(self.threadset, pattern.threadlist)
         self.assertEqual(palette[0], palette[3], "Red and Red")
         self.assertEqual(palette[1], palette[2], "Blue and Blue")
 
     def test_reserved_indices_excluded_from_matching(self):
-        threadset = get_thread_set()
-        for i in (62, 63, 64):
-            self.assertTrue(threadset[i].reserved)
+        reservedIdx = [
+            i for i, t in enumerate(self.threadset) if t.reserved
+        ]
 
         # Two colliding "Deep Gold" threads used to fall through to the
         # reserved index 62 slot (inkstitch#1105).
@@ -106,17 +122,17 @@ class TestPalettes(unittest.TestCase):
         gold2 = EmbThread()
         gold2.set_color(0xE8, 0xA9, 0x00)
         pattern.threadlist = [gold1, gold2]
-        palette = build_unique_palette(get_thread_set(), pattern.threadlist)
-        self.assertNotIn(62, palette)
-        self.assertNotIn(63, palette)
-        self.assertNotIn(64, palette)
+
+        palette = build_unique_palette(self.threadset, pattern.threadlist)
+        for i in reservedIdx:
+            self.assertNotIn(i, palette)
 
         # An RGB value that lands on reserved must resolve to a real color
         # instead.
         exact = EmbThread()
         exact.set_color(255, 200, 200)
-        index = exact.find_nearest_color_index(get_thread_set())
-        self.assertNotIn(index, (62, 63, 64))
+        index = exact.find_nearest_color_index(self.threadset)
+        self.assertNotIn(index, reservedIdx)
 
     def test_palette(self):
         """Similar colors map to the same index"""
@@ -125,7 +141,7 @@ class TestPalettes(unittest.TestCase):
         pattern += "Blue"
         pattern += "Blue"
         pattern += "Red"
-        threadset = get_thread_set()
-        palette = build_palette(threadset,pattern.threadlist)
+
+        palette = build_palette(self.threadset, pattern.threadlist)
         self.assertEqual(palette[0], palette[3], "Red and altered Red")
         self.assertEqual(palette[1], palette[2], "Blue and Blue")

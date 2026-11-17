@@ -1,10 +1,11 @@
-from typing import TextIO
+import json
+from io import TextIOWrapper
+from typing import BinaryIO, TextIO
 
-from .EmbFunctions import *
-from .EmbPattern import EmbPattern
+from pystitch.EmbFunctions import decode_embroidery_command, get_common_name_dictionary
+from pystitch.EmbPattern import EmbPattern
 
 ENCODE = False
-WRITE_FILE_IN_TEXT_MODE = True
 
 
 def decoded_name(names, data):
@@ -21,10 +22,13 @@ def decoded_name(names, data):
         name = "UNKNOWN " + str(data)
     return name
 
+def write(pattern: EmbPattern, f: BinaryIO, settings=None):
+    _f = TextIOWrapper(f)
+    _write(pattern, _f, settings)
+    _f.flush()
+    _f.detach()
 
-def write(pattern: EmbPattern, f: TextIO, settings=None):
-    import json
-
+def _write(pattern: EmbPattern, f: TextIO, settings=None):
     names = get_common_name_dictionary()
 
     metadata = {}

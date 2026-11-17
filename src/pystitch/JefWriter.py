@@ -1,10 +1,11 @@
 import datetime
 from typing import BinaryIO
 
-from .EmbConstant import *
-from .EmbPattern import EmbPattern
+from pystitch.EmbConstant import *
+from pystitch.EmbPattern import EmbPattern
+from pystitch.WriteHelper import write_int_8, write_int_32le, write_string_utf8
+
 from .EmbThreadJef import get_thread_set
-from .WriteHelper import write_int_8, write_int_32le, write_string_utf8
 
 SEQUIN_CONTINGENCY = CONTINGENCY_SEQUIN_JUMP
 FULL_JUMP = True

@@ -1,12 +1,11 @@
 import unittest
 
+from pystitch import EmbMatrix, EmbPattern, EmbThread
+from pystitch.EmbConstant import *
 from test.pattern_for_tests import get_shift_pattern
 
-from pystitch import *
-from pystitch import EmbPattern, EmbThread, EmbMatrix
 
 class TestOverloads(unittest.TestCase):
-
     def position_equals(self, stitches, j, k):
         self.assertEqual(stitches[j][:1], stitches[k][:1])
 

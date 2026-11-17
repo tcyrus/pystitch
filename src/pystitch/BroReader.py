@@ -1,6 +1,7 @@
 from typing import BinaryIO
-from .EmbPattern import EmbPattern
-from .ReadHelper import read_int_8, read_int_16le, signed8, signed16
+
+from pystitch.EmbPattern import EmbPattern
+from pystitch.ReadHelper import read_int_8, read_int_16le, signed8, signed16
 
 # Do you even embroider .bro?
 

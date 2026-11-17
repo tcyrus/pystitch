@@ -1,13 +1,18 @@
 import re
-from typing import TextIO
+from io import TextIOWrapper
+from typing import BinaryIO, TextIO
 
-from .EmbPattern import EmbPattern
+from pystitch.EmbPattern import EmbPattern
 
-READ_FILE_IN_TEXT_MODE = True
 TENTH_MM_PER_INCH = 254
 
+def read(f: BinaryIO, out: EmbPattern, settings=None):
+    _f = TextIOWrapper(f, errors="ignore")
+    _read(_f, out, settings)
+    _f.flush()
+    _f.detach()
 
-def read(f: TextIO, out: EmbPattern, settings=None):
+def _read(f: TextIO, out: EmbPattern, settings=None):
     for line in f.readlines():
         line = line.strip()
         if "M02" in line:
@@ -21,7 +26,6 @@ def read(f: TextIO, out: EmbPattern, settings=None):
             out.stitch_abs(x, y)
         except ValueError:
             pass
-
 
 def get_coords(line):
     return re.findall(r"[X,Y]([-+]?\d+\.\d*)", line)

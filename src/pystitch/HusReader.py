@@ -1,11 +1,17 @@
 from typing import BinaryIO
 
-from .EmbCompress import expand
-from .EmbPattern import EmbPattern
+from pystitch.EmbCompress import expand
+from pystitch.EmbPattern import EmbPattern
+from pystitch.exceptions import NoStitchesError
+from pystitch.ReadHelper import (
+    read_int_16le,
+    read_int_32le,
+    read_string_8,
+    signed8,
+    signed16,
+)
+
 from .EmbThreadHus import get_thread_set
-from .exceptions import NoStitchesError
-from .ReadHelper import (read_int_16le, read_int_32le, read_string_8, signed8,
-                         signed16)
 
 
 def read(f: BinaryIO, out: EmbPattern, settings=None):

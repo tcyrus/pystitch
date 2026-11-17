@@ -1,9 +1,9 @@
 from typing import BinaryIO
 
-from . import decode_embroidery_command
-from .EmbPattern import EmbPattern
-from .EmbConstant import *
-from .WriteHelper import write_string_utf8, write_int_8
+from pystitch.EmbConstant import *
+from pystitch.EmbFunctions import decode_embroidery_command
+from pystitch.EmbPattern import EmbPattern
+from pystitch.WriteHelper import write_int_8, write_string_utf8
 
 FULL_JUMP = False
 ROUND = True

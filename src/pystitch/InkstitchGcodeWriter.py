@@ -1,10 +1,9 @@
-import math
-from typing import BinaryIO
 from itertools import cycle
+from typing import BinaryIO
 
-from .EmbFunctions import *
-from .EmbPattern import EmbPattern
-from .WriteHelper import write_string_utf8
+from pystitch.EmbConstant import *
+from pystitch.EmbPattern import EmbPattern
+from pystitch.WriteHelper import write_string_utf8
 
 # This writer is in a different file because our version is substantially
 # different from upstream's.  This way we make merge conflicts less likely.

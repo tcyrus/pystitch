@@ -1,8 +1,8 @@
 from typing import BinaryIO
 
-from .EmbConstant import *
-from .EmbPattern import EmbPattern
-from .WriteHelper import (
+from pystitch.EmbConstant import *
+from pystitch.EmbPattern import EmbPattern
+from pystitch.WriteHelper import (
     write_int_8,
     write_int_16be,
     write_int_24be,

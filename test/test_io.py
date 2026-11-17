@@ -1,10 +1,9 @@
-from pathlib import Path
 import tempfile
 import unittest
-
-from test.pattern_for_tests import get_simple_pattern
+from pathlib import Path
 
 import pystitch
+from test.pattern_for_tests import get_simple_pattern
 
 
 class TestExplicitIOErrors(unittest.TestCase):

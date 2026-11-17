@@ -1,9 +1,9 @@
 import unittest
 
-from test.pattern_for_tests import get_fractal_pattern
-
-from pystitch import *
+import pystitch
 from pystitch import EmbPattern
+from pystitch.EmbConstant import *
+from test.pattern_for_tests import get_fractal_pattern
 
 
 class TestInterpolate(unittest.TestCase):

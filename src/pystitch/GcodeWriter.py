@@ -1,8 +1,9 @@
 from typing import BinaryIO
 
-from .EmbFunctions import *
-from .EmbPattern import EmbPattern
-from .WriteHelper import write_string_utf8
+from pystitch.EmbConstant import *
+from pystitch.EmbFunctions import decode_embroidery_command, get_common_name_dictionary
+from pystitch.EmbPattern import EmbPattern
+from pystitch.WriteHelper import write_string_utf8
 
 SEQUIN_CONTINGENCY = CONTINGENCY_SEQUIN_STITCH
 SCALE = (-1, -1)  # This performs a default X,Y flip.

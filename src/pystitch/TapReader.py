@@ -1,6 +1,7 @@
 from typing import BinaryIO
 
-from .EmbPattern import EmbPattern
+from pystitch.EmbPattern import EmbPattern
+
 from .DstReader import dst_read_stitches
 
 

@@ -1,8 +1,8 @@
 from typing import BinaryIO
-from xml.etree.cElementTree import Element, ElementTree, SubElement
+from xml.etree.ElementTree import Element, ElementTree, SubElement
 
-from .EmbPattern import EmbPattern
-from .EmbConstant import CONTINGENCY_SEQUIN_STITCH
+from pystitch.EmbConstant import CONTINGENCY_SEQUIN_STITCH
+from pystitch.EmbPattern import EmbPattern
 
 SEQUIN_CONTINGENCY = CONTINGENCY_SEQUIN_STITCH
 # technically I could use svg to draw a sequin as a 2 element circle path.

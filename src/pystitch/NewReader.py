@@ -1,6 +1,6 @@
 from typing import BinaryIO
 
-from .EmbPattern import EmbPattern
+from pystitch.EmbPattern import EmbPattern
 
 
 def new_stitch_encoding_read(f: BinaryIO, out: EmbPattern):
