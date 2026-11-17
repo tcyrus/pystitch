@@ -15,7 +15,9 @@ import pystitch.GenericWriter as GenericWriter
 # (e.g. pystitch.GraphicsHelper.get_graphic_as_string)
 from .GraphicsHelper import get_graphic_as_string
 
-from ._formats import *
+from ._formats._helpers import *
+from .formats import registered_extensions, supported_format, supported_formats
+
 
 get_extension_by_filename = EmbPattern.get_extension_by_filename
 read_embroidery = EmbPattern.read_embroidery
@@ -33,11 +35,14 @@ def read(file, settings=None, pattern=None):
     extension = EmbPattern.get_extension_by_filename(filename)
     extension = extension.lower()
 
-    file_type = {}
-    for format in supported_formats():
-        if extension == format["extension"]:
-            file_type = format
-            break
+    file_type = None
+
+    id = registered_extensions().get(extension)
+    if id is not None:
+        file_type = supported_format(id)
+
+    if file_type is None:
+        return None
 
     reader = file_type.get("reader")
 
@@ -59,13 +64,13 @@ def write(pattern, file, settings=None):
     extension = extension.lower()
 
     file_type = None
-    for format in supported_formats():
-        if extension == format["extension"]:
-            file_type = format
-            break
+
+    id = registered_extensions().get(extension)
+    if id is not None:
+        file_type = supported_format(id)
 
     if file_type is None:
-        raise IOError("Conversion to file type '{extension}' is not supported".format(extension=extension))
+        raise IOError(f"Conversion to file type '{extension}' is not supported")
 
     writer = file_type.get("writer")
 

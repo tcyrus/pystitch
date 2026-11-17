@@ -1,6 +1,7 @@
-# import compoundfiles
 import zlib
 from io import BytesIO
+
+import compoundfiles
 
 from pystitch.ReadHelper import read_int_8
 

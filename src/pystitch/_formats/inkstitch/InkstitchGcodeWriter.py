@@ -1,5 +1,5 @@
-from itertools import cycle
 from typing import BinaryIO
+from itertools import cycle
 
 from pystitch.EmbConstant import *
 from pystitch.EmbPattern import EmbPattern
